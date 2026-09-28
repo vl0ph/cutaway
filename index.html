@@ -275,7 +275,7 @@ animation: floatUp linear infinite;
 
 <div class="profile-card">
 
-<div class="music-toggle" id="musicToggle" title="Включить/выключить музыку">
+<div class="music-toggle playing" id="musicToggle" title="Выключить музыку">
 <svg class="icon-off" viewBox="0 0 24 24">
 <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
 </svg>
@@ -374,41 +374,52 @@ const musicToggle = document.getElementById('musicToggle');
 
 music.volume = 0.4;
 
-function updateButtonState() {
-if (music.paused) {
-musicToggle.classList.remove('playing');
-musicToggle.title = "Включить музыку";
-} else {
+let userWantsMusic = true;
+
+function setButtonPlaying() {
 musicToggle.classList.add('playing');
 musicToggle.title = "Выключить музыку";
+}
+
+function setButtonPaused() {
+musicToggle.classList.remove('playing');
+musicToggle.title = "Включить музыку";
+}
+
+function tryStartMusic() {
+if (!userWantsMusic) return;
+const promise = music.play();
+if (promise !== undefined) {
+promise.then(() => {
+setButtonPlaying();
+}).catch(() => {
+setButtonPaused();
+});
 }
 }
 
 musicToggle.addEventListener('click', () => {
 if (music.paused) {
-music.play().catch(err => console.log('Ошибка воспроизведения:', err));
+userWantsMusic = true;
+music.play().then(() => setButtonPlaying()).catch(() => setButtonPaused());
 } else {
+userWantsMusic = false;
 music.pause();
+setButtonPaused();
 }
-updateButtonState();
 });
 
 window.addEventListener('load', () => {
-music.play().then(() => {
-updateButtonState();
-}).catch(() => {
-updateButtonState();
-});
+tryStartMusic();
 });
 
-document.body.addEventListener('click', function startMusicOnce() {
-if (music.paused) {
-music.play().then(() => {
-updateButtonState();
-document.body.removeEventListener('click', startMusicOnce);
-}).catch(() => {});
+['click', 'touchstart', 'keydown', 'scroll', 'mousemove'].forEach(evt => {
+document.addEventListener(evt, () => {
+if (userWantsMusic && music.paused) {
+tryStartMusic();
 }
-}, { once: false });
+}, { passive: true });
+});
 </script>
 </body>
 </html>
