@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vloph | Cosmic Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+--bg-dark: #07050a;
+--card-bg: rgba(20, 15, 35, 0.6);
+--accent-purple: #b57cff;
+--accent-pink: #ff7ce5;
+--text-main: #ffffff;
+--text-muted: #a39bb0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+body {
+background-color: var(--bg-dark);
+background-image: radial-gradient(circle at 15% 50%, rgba(100, 50, 200, 0.15), transparent 40%),
+radial-gradient(circle at 85% 30%, rgba(200, 50, 150, 0.1), transparent 40%);
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+overflow: hidden;
+color: var(--text-main);
+position: relative;
+}
+body::before {
+content: '';
+position: absolute;
+top: 0; left: 0; right: 0; bottom: 0;
+background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+background-size: 550px 550px, 350px 350px, 250px 250px;
+background-position: 0 0, 40px 60px, 130px 270px;
+opacity: 0.3;
+animation: bgStars 60s linear infinite;
+z-index: 0;
+}
+@keyframes bgStars {
+from { background-position: 0 0, 40px 60px, 130px 270px; }
+to { background-position: 550px 550px, 390px 410px, 380px 520px; }
+}
+.profile-card {
+position: relative;
+width: 100%;
+max-width: 380px;
+height: 680px;
+background: var(--card-bg);
+border-radius: 24px;
+border: 1px solid rgba(255, 255, 255, 0.08);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+box-shadow: 0 0 40px rgba(100, 50, 200, 0.2), inset 0 0 20px rgba(180, 100, 255, 0.05);
+overflow: hidden;
+display: flex;
+flex-direction: column;
+align-items: center;
+text-align: center;
+padding: 60px 24px 24px 24px;
+z-index: 10;
+animation: cardAppear 1s ease-out forwards;
+}
+@keyframes cardAppear {
+from { opacity: 0; transform: translateY(30px) scale(0.95); }
+to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.music-toggle {
+position: absolute;
+top: 20px;
+right: 20px;
+width: 42px;
+height: 42px;
+border-radius: 50%;
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.15);
+display: flex;
+justify-content: center;
+align-items: center;
+cursor: pointer;
+transition: all 0.3s ease;
+color: var(--text-main);
+z-index: 30;
+backdrop-filter: blur(10px);
+}
+.music-toggle:hover {
+background: rgba(180, 100, 255, 0.25);
+border-color: var(--accent-purple);
+transform: scale(1.1);
+box-shadow: 0 0 15px rgba(180, 100, 255, 0.5);
+}
+.music-toggle svg { width: 20px; height: 20px; fill: currentColor; transition: opacity 0.3s ease; }
+.music-toggle .icon-off { display: block; }
+.music-toggle .icon-on { display: none; }
+.music-toggle.playing {
+color: var(--accent-purple);
+border-color: var(--accent-purple);
+box-shadow: 0 0 15px rgba(180, 100, 255, 0.5);
+}
+.music-toggle.playing .icon-off { display: none; }
+.music-toggle.playing .icon-on { display: block; }
+.music-toggle.playing::before {
+content: '';
+position: absolute;
+top: 0; left: 0; right: 0; bottom: 0;
+border-radius: 50%;
+border: 2px solid var(--accent-purple);
+animation: pulse 1.5s ease-out infinite;
+}
+@keyframes pulse {
+0% { transform: scale(1); opacity: 0.8; }
+100% { transform: scale(1.6); opacity: 0; }
+}
+.avatar-container {
+position: relative;
+width: 96px;
+height: 96px;
+margin-bottom: 20px;
+z-index: 20;
+}
+.avatar {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+object-fit: cover;
+border: 3px solid rgba(255, 255, 255, 0.1);
+box-shadow: 0 0 20px rgba(180, 100, 255, 0.5);
+position: relative;
+z-index: 2;
+}
+.avatar-glow {
+position: absolute;
+top: -5px; left: -5px; right: -5px; bottom: -5px;
+border-radius: 50%;
+background: conic-gradient(from 0deg, var(--accent-purple), var(--accent-pink), var(--accent-purple));
+animation: rotate 4s linear infinite;
+z-index: 1;
+filter: blur(8px);
+opacity: 0.7;
+}
+@keyframes rotate { 100% { transform: rotate(360deg); } }
+.nickname {
+font-size: 28px;
+font-weight: 800;
+letter-spacing: 1px;
+margin-bottom: 4px;
+text-shadow: 0 0 10px rgba(255,255,255,0.3);
+z-index: 20;
+}
+.real-name {
+font-size: 14px;
+color: var(--text-muted);
+font-weight: 600;
+margin-bottom: 24px;
+z-index: 20;
+}
+.quote {
+font-size: 14px;
+line-height: 1.6;
+color: #d1c9e0;
+font-style: italic;
+background: rgba(0, 0, 0, 0.25);
+padding: 16px;
+border-radius: 16px;
+border: 1px solid rgba(180, 100, 255, 0.2);
+box-shadow: 0 0 15px rgba(180, 100, 255, 0.1) inset;
+margin-bottom: 30px;
+z-index: 20;
+position: relative;
+animation: fadeIn 2s ease-out;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.social-links {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 12px;
+max-width: 260px;
+margin-bottom: auto;
+z-index: 20;
+position: relative;
+}
+.social-link {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+display: flex;
+justify-content: center;
+align-items: center;
+transition: all 0.3s ease;
+color: var(--text-main);
+text-decoration: none;
+}
+.social-link:hover {
+background: rgba(180, 100, 255, 0.3);
+border-color: var(--accent-purple);
+transform: translateY(-3px) scale(1.1);
+box-shadow: 0 5px 15px rgba(180, 100, 255, 0.5);
+color: #fff;
+}
+.social-link svg { width: 18px; height: 18px; fill: currentColor; }
+.tide-container {
+position: absolute;
+bottom: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 5;
+overflow: hidden;
+animation: tideMove 6s ease-in-out infinite alternate;
+}
+@keyframes tideMove {
+0% { transform: translateY(50px); }
+100% { transform: translateY(0px); }
+}
+.wave-glow {
+position: absolute;
+bottom: -50px;
+left: 0;
+width: 100%;
+height: 150px;
+background: radial-gradient(ellipse at bottom, rgba(180, 100, 255, 0.8) 0%, transparent 70%);
+filter: blur(20px);
+z-index: 6;
+}
+.wave-svg {
+position: absolute;
+bottom: -10px;
+left: 0;
+width: 100%;
+height: 150px;
+z-index: 7;
+}
+.wave-svg svg { width: 100%; height: 100%; }
+.particle {
+position: absolute;
+bottom: 20px;
+background: #fff;
+border-radius: 50%;
+box-shadow: 0 0 10px #fff, 0 0 20px var(--accent-pink), 0 0 30px var(--accent-purple);
+filter: blur(1px);
+opacity: 0;
+z-index: 8;
+animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+0% { transform: translateY(0) scale(0.5); opacity: 0; }
+20% { opacity: 1; transform: translateY(-40px) scale(1.2); }
+80% { opacity: 0.8; }
+100% { transform: translateY(-250px) scale(0.8); opacity: 0; }
+}
+@media (max-height: 750px) {
+.profile-card { height: 90vh; padding: 40px 16px 16px 16px; }
+.quote { font-size: 12px; padding: 12px; margin-bottom: 20px; }
+.social-links { gap: 8px; max-width: 220px; }
+.social-link { width: 36px; height: 36px; }
+.social-link svg { width: 16px; height: 16px; }
+.music-toggle { width: 36px; height: 36px; top: 16px; right: 16px; }
+}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop preload="auto">
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="profile-card">
+
+<div class="music-toggle" id="musicToggle" title="Включить/выключить музыку">
+<svg class="icon-off" viewBox="0 0 24 24">
+<path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+</svg>
+<svg class="icon-on" viewBox="0 0 24 24">
+<path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6zm6.5 4.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zm0 4c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5z"/>
+</svg>
+</div>
+
+<div class="avatar-container">
+<div class="avatar-glow"></div>
+<img src="avatar.png" alt="Avatar" class="avatar">
+</div>
+
+<div class="nickname">vloph</div>
+<div class="real-name">Владислав</div>
+
+<div class="quote">
+☮️ Я хотел мечтать о яблонях на Марсе, но только моя Родина, лежит в металлокассе
+</div>
+
+<div class="social-links">
+
+<a href="https://t.me/HRZ_SPm" class="social-link" title="Telegram Канал" target="_blank">
+<svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.379 1.741.379 1.741l-.014.052c-.014.051-.084.123-.145.123l-3.718 1.503-1.472 4.62c-.105.324-.433.46-.69.266l-1.61-1.169-1.735 1.25c-.246.178-.636.076-.733-.175l-1.793-4.878-4.56-1.532c-.226-.076-.243-.388-.029-.488L16.907 7.224z"/></svg>
+</a>
+
+<a href="https://t.me/vl0ph" class="social-link" title="Telegram Профиль" target="_blank">
+<svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.379 1.741.379 1.741l-.014.052c-.014.051-.084.123-.145.123l-3.718 1.503-1.472 4.62c-.105.324-.433.46-.69.266l-1.61-1.169-1.735 1.25c-.246.178-.636.076-.733-.175l-1.793-4.878-4.56-1.532c-.226-.076-.243-.388-.029-.488L16.907 7.224z"/></svg>
+</a>
+
+<a href="https://www.tiktok.com/@harizantemafan" class="social-link" title="TikTok" target="_blank">
+<svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+</a>
+
+<a href="https://github.com/vl0ph" class="social-link" title="GitHub" target="_blank">
+<svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+</a>
+
+<a href="https://www.youtube.com/@offvloph" class="social-link" title="YouTube" target="_blank">
+<svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+</a>
+
+<a href="https://discord.com/user/760560799906267216" class="social-link" title="Discord" target="_blank">
+<svg viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+</a>
+
+<a href="https://open.spotify.com/user/31pvtsdnx3cszjaqn3a3yk3skjcu" class="social-link" title="Spotify" target="_blank">
+<svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.548 17.303c-.227.373-.728.483-1.08.257-2.954-1.804-6.675-2.215-11.056-1.22-.417.094-.837-.165-.933-.582-.096-.417.165-.837.582-.933 4.795-1.096 8.912-.633 12.23 1.398.352.225.462.726.257 1.08zm1.48-3.29c-.286.465-.891.603-1.343.317-3.388-2.08-8.54-2.685-12.537-1.467-.506.153-1.04-.13-1.194-.633-.152-.502.13-1.04.634-1.192 4.567-1.387 10.246-.714 14.135 1.68.45.283.59.89.305 1.345zm.128-3.42C15.13 8.17 8.552 7.96 4.94 9.057c-.613.186-1.26-.16-1.447-.773-.187-.614.16-1.262.773-1.448 4.174-1.267 11.43-1.027 15.847 1.597.55.326.737 1.04.41 1.59-.325.55-1.04.735-1.59.41z"/></svg>
+</a>
+
+<a href="https://open.spotify.com/playlist/6R16sKNsYljPmBJWSiqkZA" class="social-link" title="Мой плейлист" target="_blank">
+<svg viewBox="0 0 24 24"><path d="M4 10h12v2H4zm0-4h12v2H4zm0 8h8v2H4zm10 0v6l5-3z"/></svg>
+</a>
+
+</div>
+
+<div class="tide-container">
+<div class="wave-glow"></div>
+<div class="wave-svg">
+<svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+<defs>
+<linearGradient id="waveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" stop-color="rgba(255, 255, 255, 1)" />
+<stop offset="30%" stop-color="rgba(220, 180, 255, 0.8)" />
+<stop offset="100%" stop-color="rgba(20, 15, 35, 0)" />
+</linearGradient>
+</defs>
+<path fill="url(#waveGrad)" d="M0,160L48,170.7C96,181,192,203,288,208C384,213,480,203,576,181.3C672,160,768,128,864,128C960,128,1056,160,1152,170.7C1248,181,1344,171,1392,165.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+</svg>
+</div>
+<div id="particles-container" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;"></div>
+</div>
+</div>
+
+<script>
+const particlesContainer = document.getElementById('particles-container');
+const particleCount = 25;
+
+for (let i = 0; i < particleCount; i++) {
+const particle = document.createElement('div');
+particle.classList.add('particle');
+const leftPos = Math.random() * 80 + 10;
+particle.style.left = `${leftPos}%`;
+const size = Math.random() * 12 + 4;
+particle.style.width = `${size}px`;
+particle.style.height = `${size}px`;
+const duration = Math.random() * 4 + 4;
+particle.style.animationDuration = `${duration}s`;
+const delay = Math.random() * 8;
+particle.style.animationDelay = `${delay}s`;
+particlesContainer.appendChild(particle);
+}
+
+const music = document.getElementById('bgMusic');
+const musicToggle = document.getElementById('musicToggle');
+
+music.volume = 0.4;
+
+function updateButtonState() {
+if (music.paused) {
+musicToggle.classList.remove('playing');
+musicToggle.title = "Включить музыку";
+} else {
+musicToggle.classList.add('playing');
+musicToggle.title = "Выключить музыку";
+}
+}
+
+musicToggle.addEventListener('click', () => {
+if (music.paused) {
+music.play().catch(err => console.log('Ошибка воспроизведения:', err));
+} else {
+music.pause();
+}
+updateButtonState();
+});
+
+window.addEventListener('load', () => {
+music.play().then(() => {
+updateButtonState();
+}).catch(() => {
+updateButtonState();
+});
+});
+
+document.body.addEventListener('click', function startMusicOnce() {
+if (music.paused) {
+music.play().then(() => {
+updateButtonState();
+document.body.removeEventListener('click', startMusicOnce);
+}).catch(() => {});
+}
+}, { once: false });
+</script>
+</body>
+</html>
